@@ -1,5 +1,42 @@
 version: '3'
 services:
+  postgres:
+    image: postgres:11.5-alpine
+    restart: "no"
+    # DB Version: 11
+    # OS Type: linux
+    # DB Type: web
+    # Total Memory (RAM): 512 MB
+    # CPUs num: 1
+    # Connections num: 200
+    # Data Storage: ssd
+#    command: postgres
+#      -c 'default_transaction_isolation=read committed'
+#      -c 'synchronous_commit=off'
+#      -c 'timezone=UTC'
+#      -c 'client_encoding=UTF8'
+#      -c 'max_connections=200'
+#      -c 'shared_buffers=128MB'
+#      -c 'effective_cache_size=384MB'
+#      -c 'maintenance_work_mem=32MB'
+#      -c 'checkpoint_completion_target=0.7'
+#      -c 'wal_buffers=3932kB'
+#      -c 'default_statistics_target=100'
+#      -c 'random_page_cost=1.1'
+#      -c 'effective_io_concurrency=200'
+#      -c 'work_mem=655kB'
+#      -c 'min_wal_size=1GB'
+#      -c 'max_wal_size=2GB'
+#      -c 'max_worker_processes=2'
+    environment:
+      - POSTGRES_USER=docker
+      - POSTGRES_PASSWORD=docker
+      - POSTGRES_DB=docker
+    ports:
+      - "5432:5432"
+    networks:
+      - bench
+
   mongo:
     image: mongo:4.2.3
     restart: "no"
@@ -17,7 +54,7 @@ services:
     restart: "no"
     environment:
         - FRAMEWORK=flask
-        - DB=mongo
+        - DB=postgres
     ports:
       - "8042:8042"
     networks:
