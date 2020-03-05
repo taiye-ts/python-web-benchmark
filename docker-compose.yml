@@ -1,0 +1,30 @@
+version: '3'
+services:
+  mongo:
+    image: mongo:4.2.3
+    restart: "no"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=docker
+      - MONGO_INITDB_ROOT_PASSWORD=docker
+    networks:
+      - bench
+
+  backend:
+    build:
+      dockerfile: Dockerfile
+      context: ./
+    command: /python/start.sh
+    restart: "no"
+    environment:
+        - FRAMEWORK=flask
+        - DB=mongo
+    ports:
+      - "8042:8042"
+    networks:
+      - bench
+
+volumes:
+  mongodb:
+
+networks:
+  bench:
