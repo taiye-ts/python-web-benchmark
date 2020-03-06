@@ -1,7 +1,7 @@
 from falcon import API
 import psycopg2
 import json
-
+from message import to_dict
 
 connection = psycopg2.connect(
     host='postgres',
@@ -17,7 +17,9 @@ class TestResource:
     def on_post(self, request, response):
 
         cursor = connection.cursor()
-        cursor.execute("INSERT INTO test (data) VALUES (%s)", (json.dumps(request.media), ))
+        cursor.execute("INSERT INTO test (data) VALUES (%s)", (json.dumps(
+            to_dict(request.stream.read(request.content_length or 0))
+        ), ))
         connection.commit()
         cursor.close()
 

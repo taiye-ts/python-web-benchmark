@@ -2,6 +2,7 @@ from flask import Flask, request, make_response
 from flask.views import MethodView
 import psycopg2
 import json
+from message import to_dict
 
 
 connection = psycopg2.connect(
@@ -17,7 +18,9 @@ class TestResource(MethodView):
 
     def post(self):
         cursor = connection.cursor()
-        cursor.execute("INSERT INTO test (data) VALUES (%s)", (json.dumps(request.json), ))
+        cursor.execute("INSERT INTO test (data) VALUES (%s)", (json.dumps(
+            to_dict(request.data)
+        ), ))
         connection.commit()
         return make_response({}, 200)
 

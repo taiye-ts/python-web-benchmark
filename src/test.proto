@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package transaction;
+
+message TransactionItem {
+    uint32 transaction_catalog_item_id = 1;
+    oneof balance_opt {
+        uint32 balance = 2;
+    }
+}
+
+message TransactionStore {
+    uint64 account_id = 1;
+    string id = 2;
+    uint32 lock_version = 3;
+    repeated TransactionItem transactions = 4;
+}
